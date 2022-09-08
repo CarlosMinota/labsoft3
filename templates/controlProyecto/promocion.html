@@ -1,0 +1,24 @@
+{% extends 'index.html'%}
+{% load staticfiles %}
+{% block titulo %}
+Promociones
+{% endblock titulo %}
+
+{% block body %}
+<div class="container">
+    <div class="row alig-items-start">
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'img/14.png' %}">
+                <div class="card-body">
+                    <h5 class="card-title">Set de promocion</h5>
+                    <p class="card-text">Precio: $50.000</p>
+                    <p class="card-text">Cantidad disponible: 1</p>
+                    <a href="#" class="btn btn-success">Seleccionar</a>
+                    <a href="#" class="btn btn-primary">Información nutricional</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

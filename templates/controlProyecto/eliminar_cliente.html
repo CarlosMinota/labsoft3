@@ -1,0 +1,19 @@
+{% extends 'index.html'%}
+
+{% block titulo %}
+Eliminar cliente
+{% endblock titulo %}
+
+
+{% block body %}
+
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+            <h2>¿Desea elimnar su perfil?</h2>
+            <button class="btn btn-danger" type="submit">Eliminar</button>
+            <button class="btn btn-primary" href="{% url 'index' %}">Cancelar</button>
+    </form>
+</div>
+
+{% endblock body %}

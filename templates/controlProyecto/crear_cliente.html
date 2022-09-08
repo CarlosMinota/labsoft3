@@ -1,0 +1,70 @@
+{% extends 'index.html'%}
+{% load staticfiles %}
+{% block titulo %}
+Creacion de cliente
+{% endblock titulo %}
+
+{% block extracss %}
+<link href="{% static 'css/crear-cliente.css' %}" rel="stylesheet" type="text/css">
+{% endblock extracss %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: purple;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">PULPICOLOR</a>
+    </div>
+</nav>
+{% endblock navbar %}
+
+{% block body %}
+
+<div class="container">
+    <div class="container-login100">
+        <form method="post" class="row g-3" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if error %}
+                <h2>{{error}}</h2>
+            {% else %}
+
+            <div class="row justify-content-center">
+                <img class="img-fluid col-4" src="{% static 'img/PULPICOLOR_LOGO.png' %}">
+            </div>
+            {% if cliente_errors %}
+            <div class="col-12">
+                {{ cliente_errors }}
+            </div>
+            {% endif %}
+            <div class="col-md-6">
+                {{ cliente_form.cedula.label }}<br>
+                {{ cliente_form.cedula }}
+            </div>
+            <div class="col-md-6">
+                {{ cliente_form.nombre_cliente.label }}<br>
+                {{ cliente_form.nombre_cliente }}
+            </div>
+            <div class="col-12">
+                {{ cliente_form.telefono.label }}<br>
+                {{ cliente_form.telefono }}
+            </div>
+            <div class="col-12">
+                {{ cliente_form.direccion.label }}<br>
+                {{ cliente_form.direccion }}
+            </div>
+            <div class="col-md-4">
+                {{ cliente_form.correo_electronico.label }}<br>
+                {{ cliente_form.correo_electronico }}
+            </div>
+            <div class="col-md-6">
+                {{ cliente_form.ciudad.label }}
+                {{ cliente_form.ciudad }}
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Crear perfil</button>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+
+{% endblock body %}

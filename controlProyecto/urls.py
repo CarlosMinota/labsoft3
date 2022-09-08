@@ -1,10 +1,11 @@
 from django.urls import path
-
-from . import views
+from .views import crearCliente, ListaProductos, editarCliente, eliminarCliente, Nosotros, Promociones
 
 urlpatterns = [
-    path('', views.index, name= 'index'),
-    path('<int:question_id>/detail', views.detail, name= 'detail'),
-    path('<int:question_id>/results', views.results, name= 'results'),
-    path('<int:question_id>/vote', views.vote, name= 'vote')
+    path('crear-cliente/', crearCliente, name='crearCliente'),
+    path('productos/', ListaProductos.as_view(), name='productos'),
+    path('editar-cliente/<slug:cedula>', editarCliente, name='editarCliente'),
+    path('eliminar-cliente/<slug:cedula>', eliminarCliente, name='eliminarCliente'),
+    path('nosotros/', Nosotros.as_view(), name='nosotros'),
+    path('promociones/', Promociones.as_view(), name='promocion'),
 ]

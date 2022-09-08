@@ -1,28 +1,69 @@
-from django.shortcuts import HttpResponse
-from django.shortcuts import render
-from .models import Question
-from django.template import loader
-from django.http import Http404
+from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import TemplateView, ListView, UpdateView
+from django.contrib import messages
+
+from .forms import ClienteForm
+from .models import Producto, Cliente, Ciudad
 
 
-def index(request):
-    lastest_question_list = Question.objects.order_by('-pub_date')[:5]
-    template = loader.get_template('controlProyecto/index.html')
-    contex = {'lastest_question_list': lastest_question_list}
-    #output = ''.join([q.question_text for q in lastest_question_list])
-    #return HttpResponse(output)
-    return render(request, 'controlProyecto/index.html', contex)
+#Se hace llamado al HTML que es la pagina inicial
+class Home(TemplateView):
+    template_name = 'index.html'
 
-def detail(request, question_id):
+#Se hace llamado a la seccion de nosotros
+class Nosotros(TemplateView):
+    template_name = 'controlProyecto/nosotros.html'
+
+#Se hace llamado a la seccion de promocion
+class Promociones(TemplateView):
+    template_name = 'controlProyecto/promocion.html'
+
+#Se hace el registro del cliente
+def crearCliente(request):
+    ciudades = Ciudad.objects.all()
+    cliente_errors = ""
+    if request.method == 'POST':
+        cliente_form = ClienteForm(request.POST)
+        if cliente_form.is_valid():
+            cliente_form.save()
+            messages.success(request, "!El registro ha sido exitoso!")
+            return redirect('index')
+        else:
+            cliente_errors = cliente_form.errors
+    else:
+        cliente_form = ClienteForm()
+    return render(request, 'controlProyecto/crear_cliente.html',{'cliente_form':cliente_form, 'ciudades':ciudades, 'cliente_errors':cliente_errors})
+
+#Se hace la funcion para editar el perfil del cliente
+def editarCliente(request, cedula):
+    cliente_form = None
+    error = None
     try:
-        question = Question.objects.get(pk=question_id)
-    except Question.DoesNotExist:
-        raise Http404("La pregunta NO existe!")
-    return render(request, 'controlProyecto/detail', {'question':question})
+        cliente = Cliente.objects.get(cedula = cedula)
+        if request.method == "GET":
+            cliente_form = ClienteForm(instance = cliente)
+        else:
+            cliente_form = ClienteForm(request.POST, instance = cliente)
+            if cliente_form.is_valid():
+                cliente_form.save()
+            return redirect('index')
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request, 'controlProyecto/crear_cliente.html', {'cliente_form':cliente_form, 'error':error})
 
-def results(request, question_id):
-    response = "Esta es la pagina de resultados de la pregunta %s" %question_id
-    return HttpResponse(response)
+#se hace a funcion para eliminar el perfil del cliente de forma logica
+def eliminarCliente(request, cedula):
+    cliente = Cliente.objects.get(cedula = cedula)
+    if request.method == 'POST':
+        cliente.estado = False
+        cliente.save()
+        return redirect('index')
+    return render(request, 'controlProyecto/eliminar_cliente.html', {'cliente':cliente})
 
-def vote(request, question_id):
-    return HttpResponse("Estas votando en la pregunta %s" %question_id)
+#se hace la consuta para llamar a los productos que estan registrados en la base de datos
+class ListaProductos(ListView):
+    model = Producto
+    template_name = 'controlProyecto/lista_productos.html'
+    context_object_name = 'productos'
+    queryset = Producto.objects.filter(estado = True)

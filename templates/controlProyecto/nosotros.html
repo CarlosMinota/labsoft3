@@ -1,0 +1,28 @@
+{% extends 'index.html'%}
+{% load staticfiles %}
+{% block titulo %}
+Nosotros
+{% endblock titulo %}
+
+{% block body %}
+<div class="col">
+    <div class="cat">
+        <img src="{% static 'img/PULPICOLOR_LOGO.png' %}" id="logo">
+    </div>
+</div>
+<div class="container">
+    <h2>MISIÓN</h2>
+    <h4>Somos una empresa que produce, envasa, almacena, transporta, distribuye y comercializa pulpas de frutas
+        combinadas por colores con el fin de contribuir a los buenos hábitos alimenticios, cumpliendo con las
+        necesidades de cada uno de los clientes y comprometiéndonos a mejorar continuamente para la población caleña con
+        el kit o set de pulpas congeladas con múltiples frutas saludables y mejorar la salud las personas.
+    </h4>
+</div>
+<div class="container">
+    <h2>VISIÓN</h2>
+    <h4>Para 2021 Pulpicolor será reconocida como distribuidora líder de pulpas congeladas con variedad de frutas
+        combinadas por colores a nivel departamental. Siendo la primera elección de pulpas para diferentes jugos por
+        nuestros altos niveles de calidad.
+    </h4>
+</div>
+{% endblock body %}
